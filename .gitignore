@@ -5,6 +5,8 @@ bin
 .idea
 zebra-zpl.iml
 CLAUDE.md
+carica_package.sh
 
 .settings
 .classpath
+.vscode
