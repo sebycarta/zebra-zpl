@@ -4,7 +4,8 @@ import fr.w3blog.zpl.constant.ZebraFont;
 import fr.w3blog.zpl.constant.ZebraPPP;
 
 /**
- * Object about printer type and model,sended to each element to adapt zpl (Heigth, Width)
+ * Object about printer type and model,sended to each element to adapt zpl
+ * (Heigth, Width)
  * 
  * 
  * @author ttropard
@@ -18,6 +19,8 @@ public class PrinterOptions {
 
 	private Integer defaultFontSize = null;
 
+	private boolean scalingEnabled = false;
+
 	public PrinterOptions() {
 		super();
 	}
@@ -28,7 +31,7 @@ public class PrinterOptions {
 	}
 
 	public PrinterOptions(PrinterOptions printerOptions) {
-		if(printerOptions != null) {
+		if (printerOptions != null) {
 			this.zebraPPP = printerOptions.getZebraPPP();
 			this.defaultZebraFont = printerOptions.getDefaultZebraFont();
 			this.defaultFontSize = printerOptions.getDefaultFontSize();
@@ -46,7 +49,7 @@ public class PrinterOptions {
 
 	/**
 	 * @param zebraPPP
-	 *            the zebraPPP to set
+	 *                 the zebraPPP to set
 	 */
 	public PrinterOptions setZebraPPP(ZebraPPP zebraPPP) {
 		this.zebraPPP = zebraPPP;
@@ -69,7 +72,7 @@ public class PrinterOptions {
 
 	/**
 	 * @param defaultZebraFont
-	 *            the defaultZebraFont to set
+	 *                         the defaultZebraFont to set
 	 */
 	public PrinterOptions setDefaultZebraFont(ZebraFont defaultZebraFont) {
 		this.defaultZebraFont = defaultZebraFont;
@@ -78,11 +81,27 @@ public class PrinterOptions {
 
 	/**
 	 * @param defaultFontSize
-	 *            the defaultFontSize to set
+	 *                        the defaultFontSize to set
 	 */
 	public PrinterOptions setDefaultFontSize(Integer defaultFontSize) {
 		this.defaultFontSize = defaultFontSize;
 		return this;
+	}
+
+	/**
+	 * * @return the scalingEnabled
+	 */
+	public boolean isScalingEnabled() {
+		return scalingEnabled;
+	}
+
+	/**
+	 * @param scalingEnabled the scalingEnabled to set
+	 */
+	public PrinterOptions setScalingEnabled(boolean scalingEnabled) {
+		this.scalingEnabled = scalingEnabled;
+		return this;
+
 	}
 
 }

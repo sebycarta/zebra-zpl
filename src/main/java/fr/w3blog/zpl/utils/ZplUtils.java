@@ -12,7 +12,7 @@ import fr.w3blog.zpl.constant.ZebraPPP;
 public class ZplUtils {
 
 	/**
-	 * Fonction called by zplCommand to cast variable object and ajust for zpl code
+	 * Function called by zplCommand to cast variable object and ajust for zpl code
 	 * 
 	 * @param object
 	 */
@@ -38,9 +38,9 @@ public class ZplUtils {
 	 * Method to quickly generate zpl code with command and variable
 	 * 
 	 * @param command
-	 *            Command (without ^)
+	 *                  Command (without ^)
 	 * @param variables
-	 *            list variable
+	 *                  list variable
 	 * @return
 	 */
 	public static StringBuilder zplCommand(String command) {
@@ -54,9 +54,9 @@ public class ZplUtils {
 	 * Method to quickly generate zpl code with command and variable
 	 * 
 	 * @param command
-	 *            Command (without ^)
+	 *                  Command (without ^)
 	 * @param variables
-	 *            list variable
+	 *                  list variable
 	 * @return
 	 */
 	public static StringBuilder zplCommandSautLigne(String command) {
@@ -69,9 +69,9 @@ public class ZplUtils {
 	 * Method to quickly generate zpl code with command and variable
 	 * 
 	 * @param command
-	 *            Command (without ^)
+	 *                  Command (without ^)
 	 * @param variables
-	 *            list variable
+	 *                  list variable
 	 * @return
 	 */
 	public static StringBuilder zplCommand(String command, Object... variables) {
@@ -85,7 +85,7 @@ public class ZplUtils {
 				zpl.append(variableObjectToZplCode(variables[i]));
 			}
 		} else if (variables.length == 1) {
-			//Only one element in variables
+			// Only one element in variables
 			zpl.append(variableObjectToZplCode(variables[0]));
 		}
 		return zpl;
@@ -95,9 +95,9 @@ public class ZplUtils {
 	 * Method to quickly generate zpl code with command and variable
 	 * 
 	 * @param command
-	 *            Command (without ^)
+	 *                  Command (without ^)
 	 * @param variables
-	 *            list variable
+	 *                  list variable
 	 * @return
 	 */
 	public static StringBuilder zplCommandSautLigne(String command, Object... variables) {
@@ -119,14 +119,52 @@ public class ZplUtils {
 	 */
 	public static Integer[] extractDotsFromFont(ZebraFont zebraFont, int fontSize, ZebraPPP zebraPPP) {
 		Integer[] array = new Integer[2];
+		// Default ratios for ZEBRA_ZERO (you can add other mappings based on empirical tests or Zebra documentation)
+		float ratioHeight = 0f;
+		float ratioWidth = 0f;
 
-		if (ZebraFont.ZEBRA_ZERO.equals(zebraFont) && ZebraPPP.DPI_300.equals(zebraPPP)) {
-			//We use ratio to converted (based on ratio used by Zebra Designer Tools)
-			array[0] = Math.round(fontSize * 4.16F);//Heigth
-			array[1] = Math.round(fontSize * 4.06F);//With
+		if (ZebraFont.ZEBRA_ZERO.equals(zebraFont)) {
+			switch (zebraPPP) {
+				case DPI_203:
+				// These values should be obtained from tests or official documentation (these are "typical" values)
+					ratioHeight = 2.83f;
+					ratioWidth = 2.74f;
+					break;
+				case DPI_300:
+					ratioHeight = 4.16f;
+					ratioWidth = 4.06f;
+					break;
+				case DPI_600:
+					ratioHeight = 8.33f;
+					ratioWidth = 8.13f;
+					break;
+				default:
+					throw new UnsupportedOperationException("PPP not supported for ZEBRA_ZERO.");
+			}
+		} else if (ZebraFont.ZEBRA_A.equals(zebraFont)) {
+			switch (zebraPPP) {
+				case DPI_203:
+					ratioHeight = 2.83f;
+					ratioWidth = 2.12f;
+					break;
+				case DPI_300:
+					ratioHeight = 4.16f;
+					ratioWidth = 3.12f;
+					break;
+				case DPI_600:
+					ratioHeight = 8.33f;
+					ratioWidth = 6.25f;
+					break;
+				default:
+					throw new UnsupportedOperationException("PPP not supported for ZEBRA_A.");
+			}
 		} else {
-			throw new UnsupportedOperationException("This PPP and this font are not yet supported. Please use ZebraAFontElement.");
+			throw new UnsupportedOperationException("This font is not supported.");
 		}
+
+		array[0] = Math.round(fontSize * ratioHeight); // Height
+		array[1] = Math.round(fontSize * ratioWidth); // Width
+
 		return array;
 	}
 

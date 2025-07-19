@@ -46,13 +46,13 @@ public abstract class ZebraBarCode<T extends ZebraBarCode<T>> extends ZebraEleme
 	 * Default Constructeur width position and text
 	 * 
 	 * @param positionX
-	 *            left margin (explain in dots)
+	 *                      left margin (explain in dots)
 	 * @param positionY
-	 *            top margin (explain in dots)
+	 *                      top margin (explain in dots)
 	 * @param text
-	 *            code to write
+	 *                      code to write
 	 * @param barCodeHeigth
-	 *            height of code bar
+	 *                      height of code bar
 	 */
 	public ZebraBarCode(int positionX, int positionY, String text, int barCodeHeigth) {
 		this.positionX = positionX;
@@ -65,19 +65,20 @@ public abstract class ZebraBarCode<T extends ZebraBarCode<T>> extends ZebraEleme
 	 * Default Constructeur width position and text
 	 * 
 	 * @param positionX
-	 *            left margin (explain in dots)
+	 *                      left margin (explain in dots)
 	 * @param positionY
-	 *            top margin (explain in dots)
+	 *                      top margin (explain in dots)
 	 * @param text
-	 *            code to write
+	 *                      code to write
 	 * @param barCodeHeigth
-	 *            height of code bar
+	 *                      height of code bar
 	 * @param barCodeWidth
-	 *            width(optionnal) of code bar
+	 *                      width(optionnal) of code bar
 	 * @param wideBarRatio
-	 *            wide bar to narrow bar width ratio
+	 *                      wide bar to narrow bar width ratio
 	 */
-	public ZebraBarCode(int positionX, int positionY, String text, int barCodeHeigth, int moduleWidth, int wideBarRatio) {
+	public ZebraBarCode(int positionX, int positionY, String text, int barCodeHeigth, int moduleWidth,
+			int wideBarRatio) {
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.barCodeHeigth = barCodeHeigth;
@@ -90,21 +91,22 @@ public abstract class ZebraBarCode<T extends ZebraBarCode<T>> extends ZebraEleme
 	 * Default Constructor width position and text
 	 * 
 	 * @param positionX
-	 *            left margin (explain in dots)
+	 *                               left margin (explain in dots)
 	 * @param positionY
-	 *            top margin (explain in dots)
+	 *                               top margin (explain in dots)
 	 * @param text
-	 *            code to write
+	 *                               code to write
 	 * @param barCodeHeigth
-	 *            height of code bar
+	 *                               height of code bar
 	 * @param showTextInterpretation
-	 *            true to print interpretation line
+	 *                               true to print interpretation line
 	 * @param moduleWidth
-	 *            width(optionnal) of code bar
+	 *                               width(optionnal) of code bar
 	 * @param wideBarRatio
-	 *            wide bar to narrow bar width ratio
+	 *                               wide bar to narrow bar width ratio
 	 */
-	public ZebraBarCode(int positionX, int positionY, String text, int barCodeHeigth, boolean showTextInterpretation, int moduleWidth, int wideBarRatio) {
+	public ZebraBarCode(int positionX, int positionY, String text, int barCodeHeigth, boolean showTextInterpretation,
+			int moduleWidth, int wideBarRatio) {
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.barCodeHeigth = barCodeHeigth;
@@ -118,19 +120,20 @@ public abstract class ZebraBarCode<T extends ZebraBarCode<T>> extends ZebraEleme
 	 * Constructeur used to print text (above or below) with code
 	 * 
 	 * @param positionX
-	 *            left margin (explain in dots)
+	 *                                    left margin (explain in dots)
 	 * @param positionY
-	 *            top margin (explain in dots)
+	 *                                    top margin (explain in dots)
 	 * @param text
-	 *            code to write
+	 *                                    code to write
 	 * @param barCodeHeigth
-	 *            height of code bar
+	 *                                    height of code bar
 	 * @param showTextInterpretation
-	 *            true to print interpretation line
+	 *                                    true to print interpretation line
 	 * @param showTextInterpretationAbove
-	 *            true to add above, false to add below
+	 *                                    true to add above, false to add below
 	 */
-	public ZebraBarCode(int positionX, int positionY, String text, int barCodeHeigth, boolean showTextInterpretation, boolean showTextInterpretationAbove) {
+	public ZebraBarCode(int positionX, int positionY, String text, int barCodeHeigth, boolean showTextInterpretation,
+			boolean showTextInterpretationAbove) {
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.barCodeHeigth = barCodeHeigth;
@@ -141,16 +144,28 @@ public abstract class ZebraBarCode<T extends ZebraBarCode<T>> extends ZebraEleme
 
 	protected abstract T getThis();
 
-	public StringBuilder getStartZplCodeBuilder() {
+	public StringBuilder getStartZplCodeBuilder(PrinterOptions printerOptions) {
 		StringBuilder zpl = new StringBuilder();
-		//On précise la position
-		zpl.append(getZplCodePosition());
+		// On précise la position
+		zpl.append(printerOptions.isScalingEnabled() ? getZplCodePosition(printerOptions.getZebraPPP())
+				: getZplCodePosition());
 		zpl.append("\n");
 		if (moduleWidth != null) {
 			zpl.append(ZplUtils.zplCommandSautLigne("BY", moduleWidth, wideBarRatio, barCodeHeigth));
 		}
 		return zpl;
 	}
+
+	// public StringBuilder getStartZplCodeBuilder() {
+	// 	StringBuilder zpl = new StringBuilder();
+	// 	// On précise la position
+	// 	zpl.append(getZplCodePosition());
+	// 	zpl.append("\n");
+	// 	if (moduleWidth != null) {
+	// 		zpl.append(ZplUtils.zplCommandSautLigne("BY", moduleWidth, wideBarRatio, barCodeHeigth));
+	// 	}
+	// 	return zpl;
+	// }
 
 	/**
 	 * Used to draw label preview.
@@ -173,7 +188,9 @@ public abstract class ZebraBarCode<T extends ZebraBarCode<T>> extends ZebraEleme
 
 		Font font = new Font("Arial", Font.BOLD, barCodeHeigth / 2);
 
-		graphic.drawRect(left, top, ZplUtils.convertPointInPixel(Math.round(moduleWidth * wideBarRatio * 9 * text.length())), ZplUtils.convertPointInPixel(barCodeHeigth));
+		graphic.drawRect(left, top,
+				ZplUtils.convertPointInPixel(Math.round(moduleWidth * wideBarRatio * 9 * text.length())),
+				ZplUtils.convertPointInPixel(barCodeHeigth));
 
 		drawTopString(graphic, font, text, left, top);
 	}

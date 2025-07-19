@@ -48,7 +48,7 @@ public class ZebraBarCode128A extends ZebraBarCode<ZebraBarCode128A> {
 
 	@Override
     public String getZplCode(PrinterOptions printerOptions) {
-        StringBuilder zpl = getStartZplCodeBuilder();
+        StringBuilder zpl = getStartZplCodeBuilder(printerOptions);
         zpl.append(ZplUtils.zplCommandSautLigne("BC", zebraRotation.getLetter(), barCodeHeigth, showTextInterpretation, showTextInterpretationAbove, checkDigit43));
         zpl.append("^FD");
         zpl.append(">9");

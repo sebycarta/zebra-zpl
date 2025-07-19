@@ -47,7 +47,6 @@ public abstract class ZebraElement<T extends ZebraElement<T>> {
 
 	protected abstract T getThis();
 
-
 	/**
 	 * Return Zpl code for this Element
 	 * 
@@ -58,7 +57,8 @@ public abstract class ZebraElement<T extends ZebraElement<T>> {
 	}
 
 	/**
-	 * Function used by child class if you want to set position before draw your element.
+	 * Function used by child class if you want to set position before draw your
+	 * element.
 	 * 
 	 * @return
 	 */
@@ -77,10 +77,16 @@ public abstract class ZebraElement<T extends ZebraElement<T>> {
 
 	protected String getZplCodePosition(ZebraPPP zebraPPP) {
 		StringBuilder zpl = new StringBuilder("");
-		if(zebraPPP != null) {
+		if (zebraPPP != null) {
 			float factor = this.scale(zebraPPP);
 			if (positionX != null && positionY != null) {
-				zpl.append(ZplUtils.zplCommand("FO", Math.round(positionX * factor), Math.round(positionY * factor)));
+				if (justification != null) {
+					zpl.append(ZplUtils.zplCommand(fieldPosition.getZpl(), Math.round(positionX * factor),
+							Math.round(positionY * factor), justification));
+				} else {
+					zpl.append(ZplUtils.zplCommand(fieldPosition.getZpl(), Math.round(positionX * factor),
+							Math.round(positionY * factor)));
+				}
 			}
 			return zpl.toString();
 		}
@@ -88,7 +94,7 @@ public abstract class ZebraElement<T extends ZebraElement<T>> {
 	}
 
 	protected float scale(ZebraPPP zebraPPP) {
-		if(zebraPPP != null) {
+		if (zebraPPP != null) {
 			return zebraPPP.getDotByMm() / ZebraPPP.values()[0].getDotByMm();
 		} else {
 			return 1.0f;
@@ -102,7 +108,7 @@ public abstract class ZebraElement<T extends ZebraElement<T>> {
 	 * Default draw a rectangle
 	 * 
 	 * @param printerOptions
-	 *            TODO
+	 *                       TODO
 	 * @param graphic
 	 */
 	public void drawPreviewGraphic(PrinterOptions printerOptions, Graphics2D graphic) {
@@ -152,7 +158,7 @@ public abstract class ZebraElement<T extends ZebraElement<T>> {
 
 	/**
 	 * @param positionX
-	 *            the positionX to set
+	 *                  the positionX to set
 	 */
 	public ZebraElement setPositionX(int positionX) {
 		this.positionX = positionX;
@@ -168,7 +174,7 @@ public abstract class ZebraElement<T extends ZebraElement<T>> {
 
 	/**
 	 * @param positionY
-	 *            the positionY to set
+	 *                  the positionY to set
 	 */
 	public ZebraElement setPositionY(int positionY) {
 		this.positionY = positionY;
@@ -184,7 +190,7 @@ public abstract class ZebraElement<T extends ZebraElement<T>> {
 
 	/**
 	 * @param justification
-	 *            the justification to set
+	 *                      the justification to set
 	 */
 	public void setJustification(ZebraJustification justification) {
 		this.justification = justification;
@@ -240,6 +246,5 @@ public abstract class ZebraElement<T extends ZebraElement<T>> {
 		this.setPositionX(positionY);
 		return getThis();
 	}
-
 
 }

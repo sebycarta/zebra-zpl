@@ -19,7 +19,8 @@ public class ZebraGraficBox extends ZebraElement<ZebraGraficBox> {
     private Integer borderTickness;
     private String lineColor;
 
-    public ZebraGraficBox(int positionX, int positionY,Integer width, Integer height, Integer borderTickness,String lineColor) {
+    public ZebraGraficBox(int positionX, int positionY, Integer width, Integer height, Integer borderTickness,
+            String lineColor) {
         this.positionX = positionX;
         this.positionY = positionY;
         this.width = width;
@@ -28,27 +29,30 @@ public class ZebraGraficBox extends ZebraElement<ZebraGraficBox> {
         this.lineColor = lineColor;
     }
 
-	@Override
-	protected ZebraGraficBox getThis() {
-		return this;
-	}
+    @Override
+    protected ZebraGraficBox getThis() {
+        return this;
+    }
 
-
-    /* (non-Javadoc)
-	 * @see fr.w3blog.zpl.model.element.ZebraElement#getZplCode(fr.w3blog.zpl.model.PrinterOptions)
-	 */
-	@Override
-	public String getZplCode(PrinterOptions printerOptions) {
-	    StringBuilder zpl = new StringBuilder();
-        zpl.append(getZplCodePosition());
+    /*
+     * (non-Javadoc)
+     * 
+     * @see fr.w3blog.zpl.model.element.ZebraElement#getZplCode(fr.w3blog.zpl.model.
+     * PrinterOptions)
+     */
+    @Override
+    public String getZplCode(PrinterOptions printerOptions) {
+        StringBuilder zpl = new StringBuilder();
+        zpl.append(printerOptions.isScalingEnabled() ? getZplCodePosition(printerOptions.getZebraPPP())
+                : getZplCodePosition());
         zpl.append("\n");
         zpl.append(ZplUtils.zplCommand("GB", width, height, borderTickness, lineColor));
         zpl.append("^FS");
         zpl.append("\n");
         return zpl.toString();
-	}
-	
-	protected String getZplCodePosition() {
+    }
+
+    protected String getZplCodePosition() {
         StringBuffer zpl = new StringBuffer("");
         if (positionX != null && positionY != null) {
             zpl.append(ZplUtils.zplCommand("FO", positionX, positionY));
