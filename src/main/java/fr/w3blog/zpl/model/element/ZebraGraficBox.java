@@ -43,7 +43,7 @@ public class ZebraGraficBox extends ZebraElement<ZebraGraficBox> {
     @Override
     public String getZplCode(PrinterOptions printerOptions) {
         StringBuilder zpl = new StringBuilder();
-        zpl.append(printerOptions.isScalingEnabled() ? getZplCodePosition(printerOptions.getZebraPPP())
+        zpl.append(printerOptions!=null && printerOptions.isScalingEnabled() ? getZplCodePosition(printerOptions.getZebraPPP())
                 : getZplCodePosition());
         zpl.append("\n");
         zpl.append(ZplUtils.zplCommand("GB", width, height, borderTickness, lineColor));

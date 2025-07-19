@@ -147,7 +147,7 @@ public abstract class ZebraBarCode<T extends ZebraBarCode<T>> extends ZebraEleme
 	public StringBuilder getStartZplCodeBuilder(PrinterOptions printerOptions) {
 		StringBuilder zpl = new StringBuilder();
 		// On précise la position
-		zpl.append(printerOptions.isScalingEnabled() ? getZplCodePosition(printerOptions.getZebraPPP())
+		zpl.append(printerOptions!=null && printerOptions.isScalingEnabled() ? getZplCodePosition(printerOptions.getZebraPPP())
 				: getZplCodePosition());
 		zpl.append("\n");
 		if (moduleWidth != null) {

@@ -4,6 +4,7 @@ target
 bin
 .idea
 zebra-zpl.iml
+CLAUDE.md
 
 .settings
 .classpath
